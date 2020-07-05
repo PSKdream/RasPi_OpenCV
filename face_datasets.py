@@ -4,12 +4,16 @@ import numpy as np
 
 # Start capturing video 
 vid_cam = cv2.VideoCapture(0)
+vid_cam.set(3, 640) # set video width
+vid_cam.set(4, 480) # set video height
 
 # Detect object in video stream using Haarcascade Frontal Face
 face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # For each person, one face id
-face_id = 2
+face_id = input('\n enter user id end press <return> ==>  ')
+print("\n [INFO] Initializing face capture. Look the camera and wait ...")
+
 
 # Initialize sample face image
 count = 0
@@ -20,7 +24,7 @@ while(True):
     # Capture video frame
     #_, image_frame = vid_cam.read()
     ret, image_frame = vid_cam.read()
-
+    image_frame = cv2.flip(image_frame, -1) # flip video image vertically
     # Convert frame to grayscale
     gray = cv2.cvtColor(image_frame, cv2.COLOR_BGR2GRAY)
 
@@ -35,6 +39,7 @@ while(True):
         
         # Increment sample face image
         count += 1
+        print(count)
 
         # Save the captured image into the datasets folder
         cv2.imwrite("dataset/User." + str(face_id) + '.' + str(count) + ".jpg", gray[y:y+h,x:x+w])

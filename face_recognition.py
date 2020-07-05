@@ -21,12 +21,14 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 
 # Initialize and start the video frame capture
 cam = cv2.VideoCapture(0)
+cam.set(3, 640) # set video widht
+cam.set(4, 480) # set video height
 
 # Loop
 while True:
     # Read the video frame
     ret, im =cam.read()
-
+    im = cv2.flip(im, -1) # Flip vertically
     # Convert the captured frame into grayscale
     gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
 
@@ -37,13 +39,12 @@ while True:
     for(x,y,w,h) in faces:
 
         # Create rectangle around the face
-        cv2.rectangle(im, (x-20,y-20), (x+w+20,y+h+20), (0,255,0), 4)
-
+        cv2.rectangle(im, (x-20,y-20), (x+w+20,y+h+20), (0,255,0), 4
         # Recognize the face belongs to which ID
         Id = recognizer.predict(gray[y:y+h,x:x+w])
         print("ID : ",Id[0])
         # Check the ID if exist 
-        if(Id[0] == 1):
+        if(Id[0] == 125):
             Id = "Dream"
         #If not exist, then it is Unknown
         elif(Id[0] == 2):
