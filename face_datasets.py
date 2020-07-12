@@ -3,12 +3,12 @@ import cv2
 import numpy as np
 
 # Start capturing video 
-vid_cam = cv2.VideoCapture(0)
-vid_cam.set(3, 640) # set video width
-vid_cam.set(4, 480) # set video height
+cam = cv2.VideoCapture(0)
+cam.set(3, 640) # set video width
+cam.set(4, 480) # set video height
 
 # Detect object in video stream using Haarcascade Frontal Face
-face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+faceCascade = cv2.CascadeClassifier('Cascades/haarcascade_frontalface_default.xml')
 
 # For each person, one face id
 face_id = input('\n enter user id end press <return> ==>  ')
@@ -22,14 +22,16 @@ count = 0
 while(True):
 
     # Capture video frame
-    #_, image_frame = vid_cam.read()
-    ret, image_frame = vid_cam.read()
-    image_frame = cv2.flip(image_frame, -1) # flip video image vertically
+    ret, image_frame = cam.read()
+
+    # flip video image vertically for RasPi
+    #image_frame = cv2.flip(image_frame, -1) 
+    
     # Convert frame to grayscale
     gray = cv2.cvtColor(image_frame, cv2.COLOR_BGR2GRAY)
 
     # Detect frames of different sizes, list of faces rectangles
-    faces = face_detector.detectMultiScale(gray, 1.3, 5)
+    faces = faceCascade.detectMultiScale(gray, 1.3, 5)
 
     # Loops for each faces
     for (x,y,w,h) in faces:
@@ -52,11 +54,11 @@ while(True):
         break
 
     # If image taken reach 100, stop taking video
-    elif count>100:
+    elif count>=100:
         break
 
 # Stop video
-vid_cam.release()
+cam.release()
 
 # Close all started windows
 cv2.destroyAllWindows()

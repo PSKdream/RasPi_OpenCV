@@ -13,7 +13,7 @@ recognizer.read('trainer/trainer.yml')
 
 # Create classifier from prebuilt model
 faceCascade = cv2.CascadeClassifier('Cascades/haarcascade_frontalface_default.xml')
-#eyeCascade = cv2.CascadeClassifier('Cascades/haarcascade_eye.xml')
+eyeCascade = cv2.CascadeClassifier('Cascades/haarcascade_eye.xml')
 smileCascade = cv2.CascadeClassifier('Cascades/haarcascade_smile.xml')
 
 # Set the font style
@@ -27,10 +27,13 @@ cam.set(4, 480) # set video height
 # Loop
 while True:
     # Read the video frame
-    ret, img =cam.read()
-    #img = cv2.flip(im, -1) # Flip vertically
+    ret, image_frame =cam.read()
+    
+    # Flip vertically for RasPI
+    #image_frame = cv2.flip(im, -1) 
+
     # Convert the captured frame into grayscale
-    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(image_frame,cv2.COLOR_BGR2GRAY)
 
     # Get all face from the video frame
     faces = faceCascade.detectMultiScale(gray, 1.2,5)
@@ -39,12 +42,12 @@ while True:
     for(x,y,w,h) in faces:
 
         # Create rectangle around the face
-        cv2.rectangle(img, (x-20,y-20), (x+w+20,y+h+20), (0,255,0), 4)
+        cv2.rectangle(image_frame, (x-20,y-20), (x+w+20,y+h+20), (0,255,0), 4)
         # Recognize the face belongs to which ID
-        Id = recognizer.predict(gray[y:y+h,x:x+w])
+        face_id = recognizer.predict(gray[y:y+h,x:x+w])
         roi_gray = gray[y:y+h, x:x+w]
-        roi_color = img[y:y+h, x:x+w] 
-        '''
+        roi_color = image_frame[y:y+h, x:x+w] 
+        #'''
         eyes = eyeCascade.detectMultiScale(
             roi_gray,
             scaleFactor= 1.5,
@@ -56,7 +59,7 @@ while True:
             cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (255, 0, 0), 2)
         if (not len(eyes)):
             print("no eyes")
-        '''
+        #'''
         '''
         smile = smileCascade.detectMultiScale(
             roi_gray,
@@ -68,23 +71,23 @@ while True:
         for (xx, yy, ww, hh) in smile:
             cv2.rectangle(roi_color, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
         '''
-        print("ID : ",Id[0])
+        print("ID : ",face_id[0])
         # Check the ID if exist 
-        if(Id[0] == 125):
-            Id = "Dream"
+        if(face_id[0] == 25):
+            face_id = "Dream"
         #If not exist, then it is Unknown
-        elif(Id[0] == 2):
-            Id = "View"
+        elif(face_id[0] == 2):
+            face_id = "View"
         else:
             #print(Id)
-            Id = "Unknow"
+            face_id = "Unknow"
 
         # Put text describe who is in the picture
-        cv2.rectangle(img, (x-22,y-90), (x+w+22, y-22), (0,255,0), -1)
-        cv2.putText(img, str(Id), (x,y-40), font, 2, (255,255,255), 3)
+        cv2.rectangle(image_frame, (x-22,y-90), (x+w+22, y-22), (0,255,0), -1)
+        cv2.putText(image_frame, str(face_id), (x,y-40), font, 2, (255,255,255), 3)
 
     # Display the video frame with the bounded rectangle
-    cv2.imshow('img',img) 
+    cv2.imshow('image_frame',image_frame) 
 
     # If 'q' is pressed, close program
     if cv2.waitKey(10) & 0xFF == ord('q'):
