@@ -1,0 +1,20 @@
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBkSQnsBLjiPrJbZTbMYsufsZFkyee4UwY",
+    authDomain: "opencv-project-4eb12.firebaseapp.com",
+    databaseURL: "https://opencv-project-4eb12.firebaseio.com",
+    projectId: "opencv-project-4eb12",
+    storageBucket: "opencv-project-4eb12.appspot.com",
+    messagingSenderId: "437717112231",
+    appId: "1:437717112231:web:28bf4fc29a57a7b28c9282"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>

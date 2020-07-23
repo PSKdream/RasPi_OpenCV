@@ -1,6 +1,8 @@
 # Import OpenCV2 for image processing
 import cv2 
 import numpy as np
+import pymongo as pm
+import mongodb as mg
 
 # Start capturing video 
 cam = cv2.VideoCapture(0)
@@ -12,8 +14,8 @@ faceCascade = cv2.CascadeClassifier('Cascades/haarcascade_frontalface_default.xm
 
 # For each person, one face id
 face_id = input('\n enter user id end press <return> ==>  ')
+name = input('\n enter name end press <return> ==>  ')
 print("\n [INFO] Initializing face capture. Look the camera and wait ...")
-
 
 # Initialize sample face image
 count = 0
@@ -55,6 +57,7 @@ while(True):
 
     # If image taken reach 100, stop taking video
     elif count>=100:
+        mg.insertEmpoyee(int(face_id),name)
         break
 
 # Stop video
@@ -62,3 +65,6 @@ cam.release()
 
 # Close all started windows
 cv2.destroyAllWindows()
+
+
+    
