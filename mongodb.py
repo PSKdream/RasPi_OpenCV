@@ -3,7 +3,6 @@ import datetime
 import os
 import firestore as fb
 import cloudstorage as cs
-from multimethod import multimethod 
 
 client = pm.MongoClient() #เชื่อมต่อ MongoDB
 
